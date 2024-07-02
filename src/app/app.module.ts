@@ -7,7 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ModalComponent } from './modal/modal.component';
 import { ErrorPopupComponent } from './error-popup/error-popup.component';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient} from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { HttpClient, provideHttpClient } from '@angular/common/http';
     RouterModule,
     ErrorPopupComponent,
     LoginComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
 
   ],
   providers: [provideHttpClient()],

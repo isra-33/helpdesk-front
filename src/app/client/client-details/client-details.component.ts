@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from 'express';
+import { ActivatedRoute , Router} from '@angular/router';
 import { ClientsService } from '../../services/clients.service';
 import { FormsModule } from '@angular/forms';
 
@@ -21,31 +20,38 @@ export class ClientDetailsComponent implements OnInit{
   editMode = false;
   showEditButton = false;
   id:any;
+
   constructor(
     private route: ActivatedRoute,
     private clientService: ClientsService,
     private router: Router
+
   ) { }
  
   ngOnInit(): void {
+    this.route.queryParams.subscribe(
+      params => {
+        this.editMode = params['edit_mode'] === 'true';
+      }    
+    );
+
     this.clientService.getAllClients().subscribe(
       (clients) => {
+        console.log(this.selectedClient)
         this.clients = clients;
         this.route.params.subscribe(
           
           params => {
             this.id = params['id'];
-            this.selectedClient = this.complaints.find(
+            this.selectedClient = this.clients.find(
               client => client.id === parseInt(this.id)
-            ) || this.newClient;  // Fallback to newComplaint if not found
+            );
             this.originalClient = { ...this.selectedClient };
           }
         );
       }
     );
   }
-
-
 
   fetchClients(): void {
     this.clientService.getAllClients().subscribe({
@@ -63,7 +69,7 @@ export class ClientDetailsComponent implements OnInit{
       this.clientService.save(this.selectedClient).subscribe(response => {
         this.selectedClient = response;
         console.log('Form data saved:', this.selectedClient);
-        this.fetchClients()
+        this.goToClients();
       });
     }
   }
@@ -71,6 +77,9 @@ export class ClientDetailsComponent implements OnInit{
     this.editMode = false;
     this.selectedClient = { ...this.originalClient };
     this.showEditButton = !this.showEditButton;
+    this.goToClients();
   }
-
+  goToClients(): void {
+    this.router.navigate(['/clients']);
+  }
 }

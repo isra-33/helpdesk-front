@@ -4,6 +4,7 @@ import { ModalComponent } from '../../modal/modal.component';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClientsService } from '../../services/clients.service';
 import { DatePipe } from '@angular/common';
+import { log } from 'console';
 
 @Component({
   selector: 'app-client-list',
@@ -24,7 +25,6 @@ export class ClientListComponent implements OnInit{
     clientCardId: new FormControl(''),
     clientMail: new FormControl(''),
     tel: new FormControl(''),
-    complaintList: new FormControl('')
   })
 
 
@@ -34,10 +34,12 @@ export class ClientListComponent implements OnInit{
   public constructor(private router: Router, private clientService: ClientsService) {}
   ngOnInit(): void {
     this.fetchClients();
+  
   }
   navigateTo(id: number, editMode = false) {
     this.router.navigateByUrl(`/clients/details/${id}?edit_mode=${editMode}`);
   }
+  
   openModal(buttonValue: string,item: any) {
     this.buttonValue = buttonValue;
     this.isModalOpen = true;
@@ -63,7 +65,7 @@ export class ClientListComponent implements OnInit{
   getComplaintlist(): void {
     this.clientService.getComplaints().subscribe((data: any[]) => {
       this.complaintList = data;
-      console.log(data);
+      //console.log(data);
     });
   }
 
@@ -99,9 +101,7 @@ export class ClientListComponent implements OnInit{
       }
     );
   }
-
   cancel(){
     this.closeModal();
-    this.fetchClients();
   }
 }

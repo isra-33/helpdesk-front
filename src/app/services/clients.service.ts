@@ -13,6 +13,9 @@ export class ClientsService {
   getAllClients(): Observable<any[]> {
     return this.http.get<any[]>(`${API_URL}/client`);
   }
+  getClientById(id: string): Observable<any[]> {
+    return this.http.get<any[]>(`${API_URL}/client/${id}`);
+  }
   deleteClient(id: string): Observable<any> {
     return this.http.delete(`${API_URL}/client/${id}`);
   }

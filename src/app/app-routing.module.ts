@@ -12,7 +12,7 @@ import { ClientDetailsComponent } from './client/client-details/client-details.c
 
 export const routes: Routes = [
   {
-    path: 'login',
+    path: '',
     component: LoginComponent
   },
   { path: '',

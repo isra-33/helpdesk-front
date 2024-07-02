@@ -31,6 +31,7 @@ export class ViewlistComponent implements OnInit {
   category: string[] = [];
   selectedCategory!: string;
   clients: any[] = [];
+  
   selectedComplaint: any ;
    
   public constructor(private router: Router, private complaintService: ComplaintService) {}
@@ -44,7 +45,6 @@ export class ViewlistComponent implements OnInit {
   getClients(): void {
     this.complaintService.getClients().subscribe((data: any[]) => {
       this.clients = data;
-      console.log(data);
     });
   }
 
@@ -85,9 +85,6 @@ export class ViewlistComponent implements OnInit {
   closeModal() {
     this.isModalOpen = false;
   }
-
-  onSave(): void {}
-
   onSubmit() {
     console.log("onsubmit");
     console.log(this.complaintToAdd.value);
@@ -123,7 +120,6 @@ export class ViewlistComponent implements OnInit {
 
   cancel(){
     this.closeModal();
-    this.fetchComplaints();
   }
   
   handleSelectChange(event: any, key: string): void {

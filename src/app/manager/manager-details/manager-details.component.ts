@@ -42,6 +42,7 @@ export class ManagerDetailsComponent {
   toggleEdit(): void {
     this.editMode = !this.editMode;
     this.showEditButton = !this.showEditButton;
+    
     if (!this.editMode) {
       this.originalManager = { ...this.selectedManager };
       console.log('Form data saved:', this.selectedManager);

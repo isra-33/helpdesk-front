@@ -41,7 +41,6 @@ export class ComplaintDetailsComponent implements OnInit {
   getClients(): void {
     this.complaintService.getClients().subscribe((data: any[]) => {
       this.clients = data;
-      console.log(data);
     });
   }
   getStatus(): void {
@@ -51,6 +50,13 @@ export class ComplaintDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
+    this.route.queryParams.subscribe(
+      params => {
+        this.editMode = params['edit_mode'] === 'true';
+      }    
+    );
+
     this.getCategory();
     this.getStatus();
     this.getClients();
@@ -64,7 +70,7 @@ export class ComplaintDetailsComponent implements OnInit {
             this.id = params['id'];
             this.selectedComplaint = this.complaints.find(
               complaint => complaint.id === parseInt(this.id)
-            ) || this.newComplaint;  // Fallback to newComplaint if not found
+            );
             this.originalComplaint = { ...this.selectedComplaint };
           }
         );
@@ -74,7 +80,7 @@ export class ComplaintDetailsComponent implements OnInit {
 
   toggleEdit(): void {
     this.editMode = !this.editMode;
-
+    this.showEditButton = !this.showEditButton;
     if (!this.editMode) {
       this.originalComplaint = { ...this.selectedComplaint };
       this.complaintService.save(this.selectedComplaint).subscribe(response => {
@@ -89,6 +95,7 @@ export class ComplaintDetailsComponent implements OnInit {
     this.editMode = false;
     this.selectedComplaint = { ...this.originalComplaint };
     this.showEditButton = !this.showEditButton;
+    this.goToComplaints();
   }
 
   goToComplaints(): void {
