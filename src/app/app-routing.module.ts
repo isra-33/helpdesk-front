@@ -6,9 +6,9 @@ import { HomeComponent } from './home/home.component';
 import { ClientListComponent } from './client/client-list/client-list.component';
 import { LayoutComponent } from './layout/layout.component';
 import { ComplaintDetailsComponent } from './complaints/complaint-details/complaint-details.component';
-import { ManagersComponent } from './manager/managers/managers.component';
-import { ManagerDetailsComponent } from './manager/manager-details/manager-details.component';
 import { ClientDetailsComponent } from './client/client-details/client-details.component';
+import { AgentListComponent } from './agents/agent-list/agent-list.component';
+import { AgentDetailsComponent } from './agents/agent-details/agent-details.component';
 
 export const routes: Routes = [
   {
@@ -24,8 +24,8 @@ export const routes: Routes = [
       { path: 'complaints/details/:id', component: ComplaintDetailsComponent },
       { path: 'clients', component: ClientListComponent },
       { path: 'clients/details/:id', component: ClientDetailsComponent },
-      { path: 'managers', component: ManagersComponent },
-      { path: 'managers/details/:id', component: ManagerDetailsComponent },
+      { path: 'agent', component: AgentListComponent },
+      { path: 'agent/details/:id', component: AgentDetailsComponent },
 
     ]
   }

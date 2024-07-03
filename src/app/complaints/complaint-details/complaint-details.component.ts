@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ComplaintService } from '../../services/complaint.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-complaint-details',
@@ -13,19 +13,24 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class ComplaintDetailsComponent implements OnInit {
 
   id!: string;
-  complaints: any[] = [];
+
   editMode = false;
   showEditButton = false;
+
+  complaints: any[] = [];
   selectedComplaint: any = {};
   originalComplaint: any = {};
-  statuses: string[] = [];
-  selectedStatus!: string;
-  category: string[] = [];
-  selectedCategory!: string;
-  clients: any[] = [];
-
   newComplaint: any = {};
 
+
+  statuses: string[] = [];
+  category: string[] = [];
+
+  clients: any[] = [];
+  selectedClient: any;
+
+  agents: any[] = [];
+  selectedAgent: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +48,11 @@ export class ComplaintDetailsComponent implements OnInit {
       this.clients = data;
     });
   }
+  getAgents(): void {
+    this.complaintService.getAllAgents().subscribe((data: any[]) => {
+      this.agents = data;
+    });
+  }
   getStatus(): void {
     this.complaintService.getStatuses().subscribe((data: string[]) => {
       this.statuses = data;
@@ -50,7 +60,9 @@ export class ComplaintDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
+    const id = this.route.snapshot.params['id'];
+
     this.route.queryParams.subscribe(
       params => {
         this.editMode = params['edit_mode'] === 'true';
@@ -60,7 +72,25 @@ export class ComplaintDetailsComponent implements OnInit {
     this.getCategory();
     this.getStatus();
     this.getClients();
+    this.getAgents();
 
+    this.complaintService.getComplaintById(id).subscribe((data: any) => {
+      console.log("data : ");
+      console.log(data);
+      console.log(data.id);
+      console.log(data.client.clientName);
+      console.log(data.agent.agentName);
+
+      this.selectedComplaint = data;
+      this.originalComplaint = { ...this.selectedComplaint }; 
+      this.selectedClient = data.client; 
+      this.selectedAgent = data.agent; 
+      
+      console.log("selectedComplaint : "+JSON.stringify(this.selectedComplaint));
+      console.log("selectedClient : "+JSON.stringify(this.selectedClient));
+      console.log("selectedAgent: "+JSON.stringify(this.selectedAgent));
+      
+    });
     this.complaintService.getComplaints().subscribe(
       (complaints) => {
         this.complaints = complaints;
@@ -72,6 +102,8 @@ export class ComplaintDetailsComponent implements OnInit {
               complaint => complaint.id === parseInt(this.id)
             );
             this.originalComplaint = { ...this.selectedComplaint };
+            this.selectedClient = this.selectedComplaint.client;
+            this.selectedAgent = this.selectedComplaint.agent;
           }
         );
       }
@@ -83,6 +115,8 @@ export class ComplaintDetailsComponent implements OnInit {
     this.showEditButton = !this.showEditButton;
     if (!this.editMode) {
       this.originalComplaint = { ...this.selectedComplaint };
+      this.selectedComplaint.client = this.selectedClient;
+      this.selectedComplaint.agent = this.selectedAgent;
       this.complaintService.save(this.selectedComplaint).subscribe(response => {
         this.selectedComplaint = response;
         console.log('Form data saved:', this.selectedComplaint);
@@ -94,6 +128,8 @@ export class ComplaintDetailsComponent implements OnInit {
   onCancel(): void {
     this.editMode = false;
     this.selectedComplaint = { ...this.originalComplaint };
+    this.selectedClient = this.selectedComplaint.client;
+    this.selectedAgent = this.selectedComplaint.agent;
     this.showEditButton = !this.showEditButton;
     this.goToComplaints();
   }

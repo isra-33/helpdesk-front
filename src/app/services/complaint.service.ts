@@ -17,6 +17,9 @@ export class ComplaintService {
   getComplaints(): Observable<any[]> {
     return this.http.get<any[]>(`${API_URL}/complaints`);
   }
+  getComplaintById(id: string): Observable<any> {
+    return this.http.get(`${API_URL}/complaints/${id}`);
+  }
 
   getStatuses(): Observable<any[]> {
     return this.http.get<any[]>(`${API_URL}/status`);
@@ -32,5 +35,9 @@ export class ComplaintService {
   getClients(): Observable<any[]> {
     return this.http.get<any[]>(`${API_URL}/client`);
   }
+  getAllAgents(): Observable<any[]> {
+    return this.http.get<any[]>(`${API_URL}/agent`);
+  }
+
   
 }

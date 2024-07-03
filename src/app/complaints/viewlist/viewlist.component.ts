@@ -19,6 +19,7 @@ export class ViewlistComponent implements OnInit {
     category: new FormControl(''),
     client: new FormControl(''),
     status: new FormControl(''),
+    agent: new FormControl(''),
     description: new FormControl('')
   })
 
@@ -31,7 +32,8 @@ export class ViewlistComponent implements OnInit {
   category: string[] = [];
   selectedCategory!: string;
   clients: any[] = [];
-  
+  agents: any[] = [];
+
   selectedComplaint: any ;
    
   public constructor(private router: Router, private complaintService: ComplaintService) {}
@@ -47,7 +49,11 @@ export class ViewlistComponent implements OnInit {
       this.clients = data;
     });
   }
-
+  getAgents(): void {
+    this.complaintService.getAllAgents().subscribe((data: any[]) => {
+      this.agents = data;
+    });
+  }
   getStatus(): void {
     this.complaintService.getStatuses().subscribe((data: string[]) => {
       this.statuses = data;
@@ -63,6 +69,7 @@ export class ViewlistComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    this.getAgents();
     this.getCategory();
     this.getClients();
     this.getStatus();
@@ -117,7 +124,6 @@ export class ViewlistComponent implements OnInit {
       }
     );
   }
-
   cancel(){
     this.closeModal();
   }

@@ -26,6 +26,4 @@ export class ClientsService {
   save(client: any): Observable<any> {
     return this.http.post<any>(`${API_URL}/client`, client);
   }
-
-
 }
