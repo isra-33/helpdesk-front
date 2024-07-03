@@ -18,8 +18,8 @@ export class ComplaintDetailsComponent implements OnInit {
   showEditButton = false;
 
   complaints: any[] = [];
-  selectedComplaint: any = {};
-  originalComplaint: any = {};
+  selectedComplaint: any;
+  originalComplaint: any;
   newComplaint: any = {};
 
 
@@ -85,10 +85,11 @@ export class ComplaintDetailsComponent implements OnInit {
       this.originalComplaint = { ...this.selectedComplaint }; 
       this.selectedClient = data.client; 
       this.selectedAgent = data.agent; 
-      
-      console.log("selectedComplaint : "+JSON.stringify(this.selectedComplaint));
-      console.log("selectedClient : "+JSON.stringify(this.selectedClient));
-      console.log("selectedAgent: "+JSON.stringify(this.selectedAgent));
+
+      console.log("selectedComplaint: ", this.selectedComplaint);
+      console.log("selectedClient: ", this.selectedClient);
+      console.log("selectedAgent: ", this.selectedAgent);
+
       
     });
     this.complaintService.getComplaints().subscribe(
