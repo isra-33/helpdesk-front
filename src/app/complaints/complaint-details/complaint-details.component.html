@@ -58,19 +58,24 @@
           <label class="block text-sm font-medium text-gray-500">
             Client
           </label>
-          <div class="mt-1">
-            <select [(ngModel)]="this.selectedClient"
+          <div class="mt-1" >
+            @if((selectedClient && !editMode)|| editMode){
+
+            <select  [(ngModel)]="selectedClient"
                     [disabled]="!editMode"
                     [style.background]="editMode ? 'white' : 'gainsboro'"
                     class="block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none text-gray-900 text-sm px-3 py-2">
                   @for(item of clients; track $index){
                     <option  
-                    [ngValue]="item.id">
-                      {{ item.clientName }}
+                      [ngValue]="item" 
+                    >
+                      {{ item.clientName }} 
                     </option>
                   }
                     
             </select>
+          }
+
           </div>
         </div>
         <div>
@@ -95,17 +100,20 @@
             Agent
           </label>
           <div class="mt-1">
-            <select [(ngModel)]="this.selectedAgent"
+            @if((selectedAgent && !editMode)|| editMode){
+
+            <select [(ngModel)]="selectedAgent"
                     [disabled]="!editMode"
                     [style.background]="editMode ? 'white' : 'gainsboro'"
                     class="block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none text-gray-900 text-sm px-3 py-2">
                   @for(item of agents; track $index){
-                    <option [selected]="this.selectedAgent?.id === item?.id"
-                     [ngValue]="item.id">
+                    <option 
+                     [ngValue]="item">
                       {{ item.agentName }}
                     </option>
                   }
             </select>
+          }
           </div>
         </div>
         <div class="col-span-2">

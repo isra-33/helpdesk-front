@@ -46,11 +46,36 @@ export class ComplaintDetailsComponent implements OnInit {
   getClients(): void {
     this.complaintService.getClients().subscribe((data: any[]) => {
       this.clients = data;
+      console.log
     });
   }
   getAgents(): void {
     this.complaintService.getAllAgents().subscribe((data: any[]) => {
       this.agents = data;
+      const id = this.route.snapshot.params['id'];
+
+      
+    this.complaintService.getComplaintById(id).subscribe((data: any) => {
+      console.log("data : ");
+      console.log(data);
+      console.log(data.id);
+      console.log(data.client.clientName);
+      console.log(data.agent.agentName);
+
+      this.selectedComplaint = data;
+      this.originalComplaint = { ...this.selectedComplaint }; 
+      this.selectedClient = this.clients.filter((row:any)=> row.id === data.client.id);
+      this.selectedClient = this.selectedClient[0]
+      
+      this.selectedAgent = this.agents.filter((row:any)=> row.id === data.agent.id);
+      this.selectedAgent = this.selectedAgent[0]
+
+      console.log("selectedComplaint: ", this.selectedComplaint);
+      console.log("selectedClient: ", this.selectedClient);
+      console.log("selectedAgent: ", this.selectedAgent);
+
+      
+    });
     });
   }
   getStatus(): void {
@@ -61,7 +86,6 @@ export class ComplaintDetailsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const id = this.route.snapshot.params['id'];
 
     this.route.queryParams.subscribe(
       params => {
@@ -74,24 +98,6 @@ export class ComplaintDetailsComponent implements OnInit {
     this.getClients();
     this.getAgents();
 
-    this.complaintService.getComplaintById(id).subscribe((data: any) => {
-      console.log("data : ");
-      console.log(data);
-      console.log(data.id);
-      console.log(data.client.clientName);
-      console.log(data.agent.agentName);
-
-      this.selectedComplaint = data;
-      this.originalComplaint = { ...this.selectedComplaint }; 
-      this.selectedClient = data.client; 
-      this.selectedAgent = data.agent; 
-
-      console.log("selectedComplaint: ", this.selectedComplaint);
-      console.log("selectedClient: ", this.selectedClient);
-      console.log("selectedAgent: ", this.selectedAgent);
-
-      
-    });
     this.complaintService.getComplaints().subscribe(
       (complaints) => {
         this.complaints = complaints;
@@ -103,8 +109,8 @@ export class ComplaintDetailsComponent implements OnInit {
               complaint => complaint.id === parseInt(this.id)
             );
             this.originalComplaint = { ...this.selectedComplaint };
-            this.selectedClient = this.selectedComplaint.client;
-            this.selectedAgent = this.selectedComplaint.agent;
+//            this.selectedClient = this.selectedComplaint.client;
+  //          this.selectedAgent = this.selectedComplaint.agent;
           }
         );
       }
