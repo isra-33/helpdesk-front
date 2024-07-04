@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule,ActivatedRoute,Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 
@@ -10,7 +10,10 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit{
+
+  firstSegment: string = 'Home';
+
     menu=[
       {
         icon:'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  stroke="currentColor" class="h-6 w-6 mr-2"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>',
@@ -34,9 +37,21 @@ export class LayoutComponent {
         path:'/agent'
       },
     ]
-    constructor(private sanitizer: DomSanitizer) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private route: ActivatedRoute, 
+    private router: Router) {};
 
     getSafeHtml(html: string): SafeHtml {
       return this.sanitizer.bypassSecurityTrustHtml(html);
+    }
+    ngOnInit(): void {
+      this.router.events.subscribe(() => {
+        const urlSegments = this.router.url.split('/').filter(segment => segment);
+        if (urlSegments.length > 0) {
+          this.firstSegment = urlSegments[0];
+          console.log('Component:', this.firstSegment);
+        }
+      });
     }
 }
